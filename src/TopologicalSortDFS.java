@@ -71,7 +71,7 @@ public class TopologicalSortDFS {
             if(visited[neighbors] == 0)
                 dfs(neighbors, visited, stack, adj);
         }
-
+//        one of the most important stuff
         stack.push(node);
     }
 
