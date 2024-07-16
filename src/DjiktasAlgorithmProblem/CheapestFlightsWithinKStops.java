@@ -1,9 +1,6 @@
 package DjiktasAlgorithmProblem;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 class QueueTuple {
 
@@ -71,6 +68,11 @@ public class CheapestFlightsWithinKStops {
         int[] distance = new int[nodes];
         Arrays.fill(distance, (int) 1e9);
 
+        int[] parent = new int[nodes];
+        for(int i=0; i<nodes; i++){
+            parent[i] = i;
+        }
+
         distance[source] = 0;
 
         Queue<QueueTuple> queue = new LinkedList<>();
@@ -93,12 +95,22 @@ public class CheapestFlightsWithinKStops {
 
                 if (c + nc < distance[v] && s <= k) {
                     distance[v] = c + nc;
+                    parent[v] = n;
                     queue.add(new QueueTuple(s + 1, v, distance[v]));
                 }
 
             }
 
         }
+
+        List<Integer> list = new ArrayList<>();
+        while(parent[destination] != destination){
+            list.add(destination);
+            destination = parent[destination];
+        }
+
+        Collections.reverse(list);
+        System.out.println(list);
 
         if (distance[destination] == 1e9) return -1;
         return distance[destination];

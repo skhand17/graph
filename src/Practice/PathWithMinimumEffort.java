@@ -1,2 +1,5 @@
-package Practice;public class PathWithMinimumEffort {
+package Practice;
+
+public class PathWithMinimumEffort {
+
 }

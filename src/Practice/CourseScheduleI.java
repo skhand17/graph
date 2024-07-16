@@ -1,2 +1,5 @@
-package Practice;public class CourseScheduleI {
+package Practice;
+
+public class CourseScheduleI {
+
 }

@@ -43,7 +43,7 @@ public class DetectACycleInDirectedGraph {
 //        9
         adj.get(9).add(10);
 //        10
-//        adj.get(10).add(8);
+        adj.get(10).add(8);
 
 
         boolean cylic = isCyclic(v, adj);
@@ -55,10 +55,11 @@ public class DetectACycleInDirectedGraph {
         int [] visited = new int[v+1];
         int [] pathVisted = new int[v+1];
 
-        for(int i=1; i<=v; i++){
-
-            if(dfsCheck(adj, i, visited, pathVisted)){
-                return true;
+        for(int i=1; i<=v; i++) {
+            if (visited[i] == 0) {
+                if (dfsCheck(adj, i, visited, pathVisted)) {
+                    return true;
+                }
             }
         }
         return false;

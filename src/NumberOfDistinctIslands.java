@@ -23,7 +23,6 @@ public class NumberOfDistinctIslands {
 
         int row = grid.length;
         int col = grid[0].length;
-        int count = 0;
         boolean[][] visited = new boolean[row][col];
         HashSet<ArrayList<String>> st = new HashSet<>();
 
@@ -49,7 +48,7 @@ public class NumberOfDistinctIslands {
         visited[row][col] = true;
 
         queue.add(new PairTwo(row, col));
-        stringArrayList.add(toString(0 , 0));
+//        stringArrayList.add(toString(0 , 0));
 
         while(!queue.isEmpty()){
             int r = queue.peek().row;
