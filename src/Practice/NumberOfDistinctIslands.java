@@ -19,11 +19,11 @@ public class NumberOfDistinctIslands {
     public static void main(String[] args) {
 
         char[][] grid = new char[][]
-                {{'1', '1', '0', '1', '1'},
+                {       {'1', '1', '0', '1', '1'},
                         {'1', '0', '0', '0', '0'},
                         {'0', '0', '0', '0', '0'},
-                        {'0', '0', '0', '0', '1'},
-                        {'1', '1', '0', '1', '1'}
+                        {'0', '0', '0', '1', '1'},
+                        {'1', '1', '0', '0', '1'}
                 };
 
         int numberOfDistinct = numberOfDistinctIslands(grid);
@@ -34,59 +34,58 @@ public class NumberOfDistinctIslands {
 
     public static int numberOfDistinctIslands(char[][] grid) {
 
+        Set<List<String>> set = new HashSet<>();
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
         int n = grid.length;
         int m = grid[0].length;
 
-        Set<List<String>> set = new HashSet<>();
-        boolean[][] visited = new boolean[n][m];
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<m; j++) {
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (!visited[i][j] && grid[i][j] == '1') {
-                    List<String> result = new ArrayList<>();
-                    bfs(grid, visited, result, i, j);
-                    set.add(result);
+                if(grid[i][j] =='1' && !visited[i][j]){
+                    List<String> list = new ArrayList<>();
+                    bfs(visited, list, grid, i, j);
+                    set.add(list);
                 }
             }
         }
         return set.size();
     }
 
-    private static void bfs(char[][] grid, boolean[][] visited, List<String> result, int row, int col) {
+    public static void bfs(boolean[][] visited, List<String> list, char[][] grid, int rw, int cl) {
 
+        visited[rw][cl] = true;
         Queue<PairFive> queue = new LinkedList<>();
-        visited[row][col] = true;
-
-        queue.add(new PairFive(row, col));
+        queue.offer(new PairFive(rw, cl));
 
         int[] deltaRow = new int[]{-1, 0, 1, 0};
         int[] deltaCol = new int[]{0, 1, 0, -1};
 
         while (!queue.isEmpty()) {
+            PairFive pairFive = queue.poll();
+            int row = pairFive.row;
+            int col = pairFive.col;
 
-            int r = queue.peek().row;
-            int c = queue.peek().col;
-            queue.poll();
 
-            for (int i = 0; i < 4; i++) {
-                int newRow = r + deltaRow[i];
-                int newCol = c + deltaCol[i];
+            for(int i=0; i<4; i++) {
 
-                if (newRow >= 0 && newRow < grid.length
-                        && newCol >= 0 && newCol < grid[0].length
-                        && !visited[newRow][newCol] &&
-                        grid[newRow][newCol] == '1') {
+                int newRow = row + deltaRow[i];
+                int newCol = col + deltaCol[i];
+
+                if(newRow >=0 && newRow < grid.length &&
+                        newCol >=0 && newCol < grid[0].length &&
+                        grid[newRow][newCol] == '1' && !visited[newRow][newCol]){
+
                     visited[newRow][newCol] = true;
-                    queue.add(new PairFive(newRow, newCol));
-                    result.add(toString(newRow - row, newCol - col));
-
+                    queue.offer(new PairFive(newRow, newCol));
+                    list.add(toString(newRow - row, newCol - col));
                 }
             }
         }
-
     }
 
-    private static String toString(int r, int c) {
-        return r + " " + c;
+    public static String toString(int row, int col) {
+        return row + " " + col;
     }
+
 }

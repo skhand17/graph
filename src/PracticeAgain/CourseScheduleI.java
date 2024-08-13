@@ -10,8 +10,7 @@ public class CourseScheduleI {
     public static void main(String[] args) {
         int[][] preq = new int[][]{
                 {1, 0},
-                {2, 0},
-                {3, 1},
+                {2, 1},
                 {3, 2}
         };
         int numCourses = 4;
@@ -27,7 +26,7 @@ public class CourseScheduleI {
         }
 
         for(int i=0; i< preq.length; i++){
-            adj.get(preq[i][1]).add(preq[i][0]);
+            adj.get(preq[i][0]).add(preq[i][1]);
         }
 
         int[] topo = new int[numCourses];

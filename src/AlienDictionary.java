@@ -18,36 +18,37 @@ public class AlienDictionary {
     private static String findOrder(String[] dict, int n, int k) {
 
         List<List<Integer>> adj = new ArrayList<>();
-
-        for(int i=0; i< k; i++){
+        for(int i=0; i<k; i++){
             adj.add(new ArrayList<>());
         }
 
-        for(int i=0; i<n-1; i++){
-            String s1 = dict[i];
-            String s2 = dict[i+1];
-            int minLength = Math.min(s1.length(), s2.length());
+        for(int i=0; i<dict.length - 1; i++) {
+            String word = dict[i];
+            String nextWord = dict[i + 1];
 
-            for(int ptr =0; ptr < minLength; ptr++){
-                if(s1.charAt(ptr) != s2.charAt(ptr)){
-                    adj.get(s1.charAt(ptr) - 'a').add(s2.charAt(ptr) - 'a');
+            int minLength = Math.min(word.length(), nextWord.length());
+            for (int j = 0; j < minLength; j++) {
+                if (word.charAt(j) != nextWord.charAt(j)) {
+                    adj.get(word.charAt(j) - 'a').add(nextWord.charAt(j) - 'a');
                     break;
                 }
             }
         }
 
-        List<Integer> topoSort = topoSortAlien(k, adj);
-        String ans="";
+           int[] toporesult = bfsTopo(adj, n, k);
 
-        for(int it: topoSort){
-            ans += (char)(it + (int)('a'));
-        }
+            String ans ="";
 
-        return ans;
+            for(Integer it : toporesult){
+                ans +=(char)(it +(int)'a');
+            }
+
+            return ans;
     }
 
-    private static List<Integer> topoSortAlien(int k, List<List<Integer>> adj) {
+    private static int[] bfsTopo(List<List<Integer>> adj, int n, int k){
 
+        int[] topo = new int[k];
         int[] indegree = new int[k];
 
         for(int i=0; i<k; i++){
@@ -56,22 +57,25 @@ public class AlienDictionary {
             }
         }
 
-        List<Integer> topo = new ArrayList<>();
-
         Queue<Integer> queue = new LinkedList<>();
-
         for(int i=0; i<k; i++){
-            if(indegree[i] == 0)
-                queue.add(i);
+            if(indegree[i] == 0){
+                queue.offer(i);
+            }
         }
-        while(!queue.isEmpty()) {
-            Integer node = queue.peek();
-            topo.add(queue.poll());
+
+        int count = 0;
+
+        while (!queue.isEmpty()){
+            Integer node = queue.poll();
+
+            topo[count++] = node;
 
             for(Integer neighbors : adj.get(node)){
                 indegree[neighbors]--;
-                if(indegree[neighbors] == 0)
-                    queue.add(neighbors);
+                if(indegree[neighbors] == 0){
+                    queue.offer(neighbors);
+                }
             }
         }
         return topo;

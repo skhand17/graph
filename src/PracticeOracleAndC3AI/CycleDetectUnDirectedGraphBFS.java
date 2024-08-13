@@ -20,7 +20,7 @@ public class CycleDetectUnDirectedGraphBFS {
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
 
         int v = 7;
-        for(int i=0; i<=v; i++){
+        for (int i = 0; i <= v; i++) {
             adj.add(new ArrayList<>());
         }
 
@@ -46,11 +46,10 @@ public class CycleDetectUnDirectedGraphBFS {
     public static boolean isCyclePresent(ArrayList<ArrayList<Integer>> adjList, int V) {
 
         boolean[] visited = new boolean[V+1];
-        Arrays.fill(visited, false);
 
-        for(int i=1; i<=V; i++) {
-            if(!visited[i]){
-                if(bfsCycle(adjList, V, visited, i)) {
+        for(int i=0; i<V; i++) {
+            if(!visited[i]) {
+                if(bfsCycleCheck(adjList, i, visited, V)){
                     return true;
                 }
             }
@@ -58,28 +57,31 @@ public class CycleDetectUnDirectedGraphBFS {
         return false;
     }
 
-    public static boolean bfsCycle(ArrayList<ArrayList<Integer>> adjList, int V, boolean[] visited, int source) {
+    public static boolean bfsCycleCheck(ArrayList<ArrayList<Integer>> adj, int source,
+                                        boolean[] visited, int V) {
 
-        visited[source] = true;
+
         Queue<QueuePair> queue = new LinkedList<>();
+        visited[source] = true;
+        queue.offer(new QueuePair(source, -1));
 
-        queue.add(new QueuePair(source, 0));
 
-        while(!queue.isEmpty()) {
-            QueuePair pair = queue.poll();
-            int node = pair.node;
-            int parent = pair.parent;
+        while (!queue.isEmpty()) {
+            QueuePair qp = queue.poll();
+            int node = qp.node;
+            int parentNode = qp.parent;
 
-            for(Integer neighbors : adjList.get(node)) {
 
-                if(!visited[neighbors]) {
+            for(Integer neighbors : adj.get(node)) {
+                if(!visited[neighbors]){
                     visited[neighbors] = true;
                     queue.offer(new QueuePair(neighbors, node));
-                } else if (parent != neighbors){
+                } else if (parentNode != neighbors){
                     return true;
                 }
             }
+
         }
-        return false;
+        return true;
     }
 }
